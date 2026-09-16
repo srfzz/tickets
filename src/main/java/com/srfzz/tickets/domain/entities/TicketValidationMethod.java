@@ -1,4 +1,4 @@
-package com.srfzz.tickets.domain;
+package com.srfzz.tickets.domain.entities;
 
 public enum TicketValidationMethod {
     QR_SCAN,MANUAL

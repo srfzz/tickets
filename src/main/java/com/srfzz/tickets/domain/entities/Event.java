@@ -1,4 +1,4 @@
-package com.srfzz.tickets.domain;
+package com.srfzz.tickets.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -58,6 +58,9 @@ public class Event {
     @ManyToMany(mappedBy = "staffsEvents")
     private List<User> staffs=new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<TicketType> ticketTypes=new ArrayList<>();
     @CreatedDate
     @Column(name="created_at",updatable = false,nullable = false)
     private Instant createdAt;

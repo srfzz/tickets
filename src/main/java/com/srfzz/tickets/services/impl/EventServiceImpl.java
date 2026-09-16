@@ -1,0 +1,56 @@
+package com.srfzz.tickets.services.impl;
+
+
+import com.srfzz.tickets.domain.CreateEventRequest;
+import com.srfzz.tickets.domain.entities.Event;
+import com.srfzz.tickets.domain.entities.Ticket;
+import com.srfzz.tickets.domain.entities.TicketType;
+import com.srfzz.tickets.domain.entities.User;
+import com.srfzz.tickets.exceptions.UserNotFoundExcpetion;
+import com.srfzz.tickets.repository.EventRepository;
+import com.srfzz.tickets.repository.UserRepository;
+import com.srfzz.tickets.services.EventService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class EventServiceImpl implements EventService {
+
+    private final UserRepository userRepository;
+    private final EventRepository eventRepository;
+
+    @Override
+    public Event createEvent(UUID organizerId, CreateEventRequest req) {
+        log.info("Creating event '{}' for organizer {}", req.getName(), organizerId);
+        User user= userRepository.findById(organizerId).orElseThrow(()-> new UserNotFoundExcpetion(organizerId));
+
+
+   List<TicketType> ticketTypesTocreate= req.getTicketTypes().stream().map(ticketType -> {
+    return TicketType.builder()
+                     .name(ticketType.getName())
+                     .price(ticketType.getPrice())
+                     .description(ticketType.getDescription())
+                     .totalAvailable(ticketType.getTotalAvailable())
+                     .build();
+         }).toList();
+        Event createdEvent = Event.builder().name(req.getName())
+                .start(req.getStart())
+                .end(req.getEnd())
+                .venue(req.getVenue())
+                .salesStart(req.getSalesStart())
+                .salesEnd(req.getSalesEnd())
+                .status(req.getStatus())
+                .organizer(user)
+                .ticketTypes(ticketTypesTocreate)
+                .build();
+        log.info("Created Event {} for organizer {}", createdEvent, organizerId);
+       return eventRepository.save(createdEvent);
+
+    }
+}
