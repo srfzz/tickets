@@ -1,6 +1,7 @@
 package com.srfzz.tickets.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -9,6 +10,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,12 +36,30 @@ public class User {
     private String email;
 
     //TODO:ORGANIZE EVENTS
+    @JsonIgnore
+    @OneToMany(mappedBy ="organizer",fetch = FetchType.LAZY)
+    private List<Event> organizedEvents = new ArrayList<>();
 
 
     //TODO:ATTENDING EVENTS
-
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name="user_attending_events",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="event_id")
+    )
+private List<Event> attendingEvents = new ArrayList<>();
 
     //TODO: STAFFING EVENTS
+@JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name="user_staffing_events",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private List<Event> staffsEvents = new ArrayList<>();
 
     @CreatedDate
     @Column(name ="created_at",nullable = false,updatable = false)
