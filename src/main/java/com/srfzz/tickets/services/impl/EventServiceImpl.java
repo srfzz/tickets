@@ -3,10 +3,9 @@ package com.srfzz.tickets.services.impl;
 
 import com.srfzz.tickets.domain.CreateEventRequest;
 import com.srfzz.tickets.domain.entities.Event;
-import com.srfzz.tickets.domain.entities.Ticket;
 import com.srfzz.tickets.domain.entities.TicketType;
 import com.srfzz.tickets.domain.entities.User;
-import com.srfzz.tickets.exceptions.UserNotFoundExcpetion;
+import com.srfzz.tickets.exceptions.UserNotFoundException;
 import com.srfzz.tickets.repository.EventRepository;
 import com.srfzz.tickets.repository.UserRepository;
 import com.srfzz.tickets.services.EventService;
@@ -28,7 +27,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event createEvent(UUID organizerId, CreateEventRequest req) {
         log.info("Creating event '{}' for organizer {}", req.getName(), organizerId);
-        User user= userRepository.findById(organizerId).orElseThrow(()-> new UserNotFoundExcpetion(organizerId));
+        User user= userRepository.findById(organizerId).orElseThrow(()-> new UserNotFoundException(organizerId));
 
 
    List<TicketType> ticketTypesTocreate= req.getTicketTypes().stream().map(ticketType -> {
