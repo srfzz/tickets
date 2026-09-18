@@ -30,14 +30,7 @@ public class EventServiceImpl implements EventService {
         User user= userRepository.findById(organizerId).orElseThrow(()-> new UserNotFoundException(organizerId));
 
 
-   List<TicketType> ticketTypesTocreate= req.getTicketTypes().stream().map(ticketType -> {
-    return TicketType.builder()
-                     .name(ticketType.getName())
-                     .price(ticketType.getPrice())
-                     .description(ticketType.getDescription())
-                     .totalAvailable(ticketType.getTotalAvailable())
-                     .build();
-         }).toList();
+
         Event createdEvent = Event.builder().name(req.getName())
                 .start(req.getStart())
                 .end(req.getEnd())
@@ -46,8 +39,18 @@ public class EventServiceImpl implements EventService {
                 .salesEnd(req.getSalesEnd())
                 .status(req.getStatus())
                 .organizer(user)
-                .ticketTypes(ticketTypesTocreate)
+                // .ticketTypes(ticketTypesTocreate)
                 .build();
+        List<TicketType> ticketTypesTocreate= req.getTicketTypes().stream().map(ticketType -> {
+            return TicketType.builder()
+                    .name(ticketType.getName())
+                    .price(ticketType.getPrice())
+                    .description(ticketType.getDescription())
+                    .event(createdEvent)
+                    .totalAvailable(ticketType.getTotalAvailable())
+                    .build();
+        }).toList();
+        createdEvent.setTicketTypes(ticketTypesTocreate);
         log.info("Created Event {} for organizer {}", createdEvent, organizerId);
        return eventRepository.save(createdEvent);
 

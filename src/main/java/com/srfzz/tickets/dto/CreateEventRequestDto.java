@@ -27,8 +27,8 @@ public class CreateEventRequestDto {
     private Instant salesEnd;
     @NotNull(message = "Event Status is Required")
     private EventStatusEnum status;
+    private User organizer;
     @NotNull(message = "Atleast One Ticket Type is Required")
     @Valid
-    private User organizer;
     private List<CreateTicketTypeRequestDto> ticketTypes;
 }

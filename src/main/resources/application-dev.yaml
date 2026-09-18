@@ -6,10 +6,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
   security:
     oauth2:
       resourceserver:
@@ -17,5 +17,12 @@ spring:
           issuer-uri: http://localhost:8090/realms/event-ticket-platform
 
 logging:
+  config: classpath:logback-spring.xml
   level:
-    org.hibernate.SQL: DEBUG
+    root: INFO
+  logback:
+    rollingpolicy:
+      max-history: 4
+      max-file-size: 10MB
+      total-size-cap: 500MB
+      clean-history-on-start: true

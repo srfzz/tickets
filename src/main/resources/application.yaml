@@ -8,9 +8,7 @@ spring:
     open-in-view: false
   profiles:
     active: dev
-  mvc:
-    problemdetails:
-      enabled: true
+
 
 server:
   port: 8080

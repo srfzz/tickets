@@ -30,9 +30,9 @@ public class Event {
     private UUID id;
     @Column(name="name",nullable = false,length = 100)
     private String name;
-    @Column(name="start",nullable = false)
+    @Column(name="start_date",nullable = false)
     private Instant start;
-    @Column(name="end",nullable = false)
+    @Column(name="end_date",nullable = false)
     private Instant end;
     @Column(name="venue",nullable = false,length = 300)
     private String venue;
