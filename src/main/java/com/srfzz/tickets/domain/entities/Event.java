@@ -46,7 +46,7 @@ public class Event {
 
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY )
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "organizer_id",nullable = false)
     private User organizer;
 
@@ -59,7 +59,7 @@ public class Event {
     private List<User> staffs=new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<TicketType> ticketTypes=new ArrayList<>();
     @CreatedDate
     @Column(name="created_at",updatable = false,nullable = false)

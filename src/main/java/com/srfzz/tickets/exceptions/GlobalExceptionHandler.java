@@ -29,6 +29,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
 
     }
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleEventNotFoundException(EventNotFoundException ex) {
+        log.error("EventNotFoundException", ex);
+        ErrorDto errorDto = ErrorDto.builder().error(ex.getMessage()).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
+    }
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorDto> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         log.error("JSON parse error", ex);
